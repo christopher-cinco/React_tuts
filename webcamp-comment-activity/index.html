@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello React</title>
+    <!-- Not present in the tutorial. Just for basic styling. -->
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/react-with-addons.js"></script>
+    <script src="/js/JSXTransformer-0.11.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  </head>
+
+  <body>
+    <p class="title">This is a tutorial for Facebook React!</p>
+
+    <div id="content"></div>
+
+
+    <script type="text/jsx">
+      /** @jsx React.DOM */
+
+      var CommentBox = React.createClass({
+        getInitialState: function() {
+          return {
+            data: []
+          };
+        },
+        handleCommentSubmit: function(data){
+          this.state.data.push(data);
+          this.setState({data:this.state.data});
+        },        
+        render: function() {
+          return (
+            <div className="commentBox">
+              <Status />
+              <CommentList data={this.state.data} />
+              <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+            </div>
+          );
+        }
+      });
+
+      var Status = React.createClass({
+        render: function(){
+          return (
+            <div className="main-status">
+              <div>
+                <img className="profile-picture" src="/images/profile-picture.jpg" />
+                <div className="details">
+                  <span className="name"><strong>Marie Curie</strong></span> <br/>
+                  <span className="time">2 hrs ago</span>
+                </div>
+              </div>
+              <p className="status">Did you hear pottasium and oxygen went on a date? It went OK.</p>
+            </div>
+          )
+        }
+      });
+
+      var Comment = React.createClass({
+        render: function() {
+          
+          return (
+            <div className="comment">
+              <div className="initial-profile-picture profile-picture" style={{'background-color':'#'+this.props.color}}>{this.props.author.charAt(0).toUpperCase()}</div>
+              
+              <div className="details">                
+                <p className="comment-details"><span className="name commentAuthor"><strong>{this.props.author}</strong></span> {this.props.comment}</p>   
+                
+                <br/>
+                <span className="time">Just now</span>                                 
+              </div>
+            </div>
+          );
+        }
+      });
+
+      var CommentList = React.createClass({
+        render: function() {
+          var commentNodes = this.props.data.map(function(comment, index) {
+            return (
+              <Comment author={comment.author} comment={comment.text} color={comment.color}/>
+            );
+          });
+          return (
+            <div className="commentList">
+              {commentNodes}
+            </div>
+          );
+        }
+      });
+
+      var CommentForm = React.createClass({
+        handleSubmit: function(e) {
+          e.preventDefault();
+          var randomColor = Math.floor(Math.random()*16777215).toString(16);
+          var author = this.refs.author.getDOMNode().value.trim();
+          var text = this.refs.text.getDOMNode().value.trim();
+          if (!text || !author) {
+            return;
+          }
+          this.props.onCommentSubmit({author: author, text: text, color:randomColor});
+          this.refs.author.getDOMNode().value = '';
+          this.refs.text.getDOMNode().value = '';
+        },
+        render: function() {
+          return (
+            <form className="commentForm" onSubmit={this.handleSubmit}>
+              <img className="profile-picture" src="/images/profile-picture.jpg" />
+              <input type="text" placeholder="Name" ref="author" className="input-name"/>
+              <input type="text" placeholder="Write a comment..." ref="text" className="input-comment"/>
+              <input type="submit" value="Post" className="hidden"/>
+            </form>
+          );
+        }
+      });
+      
+      React.renderComponent( <CommentBox  />, document.getElementById('content') );
+    </script>
+  </body>
+</html>
