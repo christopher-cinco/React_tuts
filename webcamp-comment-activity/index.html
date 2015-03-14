@@ -3,10 +3,10 @@
   <head>
     <title>Hello React</title>
     <!-- Not present in the tutorial. Just for basic styling. -->
-    <link rel="stylesheet" href="/css/bootstrap.css" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <script src="/js/react-with-addons.js"></script>
-    <script src="/js/JSXTransformer-0.11.0.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/react-with-addons.js"></script>
+    <script src="js/JSXTransformer-0.11.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
   </head>
 
@@ -45,13 +45,13 @@
           return (
             <div className="main-status">
               <div>
-                <img className="profile-picture" src="/images/profile-picture.jpg" />
+                <img className="profile-picture" src="images/profile-picture.jpg" />
                 <div className="details">
                   <span className="name"><strong>Marie Curie</strong></span> <br/>
                   <span className="time">2 hrs ago</span>
                 </div>
               </div>
-              <p className="status">Did you hear pottasium and oxygen went on a date? It went OK.</p>
+              <p className="status">Did you hear pottasium and oxygen went on a date? It went OK. #Webcamp2015</p>
             </div>
           )
         }
@@ -106,7 +106,7 @@
         render: function() {
           return (
             <form className="commentForm" onSubmit={this.handleSubmit}>
-              <img className="profile-picture" src="/images/profile-picture.jpg" />
+              <img className="profile-picture" src="images/profile-picture.jpg" />
               <input type="text" placeholder="Name" ref="author" className="input-name"/>
               <input type="text" placeholder="Write a comment..." ref="text" className="input-comment"/>
               <input type="submit" value="Post" className="hidden"/>

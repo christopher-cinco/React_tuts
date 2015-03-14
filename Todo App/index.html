@@ -35,16 +35,11 @@
 				this.state.todoList.push({ 'todo': this.state.todoInput });
 				this.setState({ todoList: this.state.todoList, todoInput: '' });
 			},
-			deleteTodoList: function(index){
-				var todoList_dummy = this.state.todoList;
-				todoList_dummy.splice(index, 1);
-				this.setState({todoList: todoList_dummy });
-			},
 			render: function()
 			{
 				var todoList = this.state.todoList.map(function(element, index){
-					return <TodoList todo={element.todo} index={index} delete={this.deleteTodoList} />;
-				}.bind(this));
+					return <TodoList todo={element.todo} index={index} />;
+				});
 				
 				var footer = <p className="footer"><small><em>{todoList.length} ITEM{todoList.length > 1 ? 'S':''} IN THE LIST</em></small></p>;
 				return (
@@ -59,13 +54,10 @@
 		});
 
 		var TodoList = React.createClass({
-			delete: function(){
-				this.props.delete(this.props.index);
-			},
 			render: function(){
 				return (
 					<div className="todo-list">
-						<p>{this.props.todo} <button className="delete-btn" type="button" value="x" onClick={this.delete}><i className="fa fa-times"></i></button></p>
+						<p>{this.props.todo}</p>
 					</div>
 				);				
 			}
