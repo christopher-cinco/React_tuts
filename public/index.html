@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>React Todo</title>
+	<script src="js/lib/react-with-addons.js"></script>
+	<script src="js/lib/JSXTransformer-0.11.0.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/lib/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/fonts/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<script type="text/jsx">
+		/** @jsx React.DOM */
+
+		var TodoApp = React.createClass({
+			getInitialState: function(){
+				return {
+					todoInput: '',
+					todoList: []
+				}
+			},
+			handleChange: function(event){
+				if(event.which === 13){
+					this.addTodoList();
+				}
+				else if (event.which === 27){
+					this.setState({todoInput:''});
+				}
+			},
+			handleTodo: function(event){
+				var value = event.target.value;
+				this.setState({ todoInput:value });
+			},
+			addTodoList: function(){
+				this.state.todoList.push({ 'todo': this.state.todoInput });
+				this.setState({ todoList: this.state.todoList, todoInput: '' });
+			},
+			deleteTodoList: function(index){
+				var todoList_dummy = this.state.todoList;
+				todoList_dummy.splice(index, 1);
+				this.setState({todoList: todoList_dummy });
+			},
+			render: function()
+			{
+				var todoList = this.state.todoList.map(function(element, index){
+					return <TodoList todo={element.todo} index={index} delete={this.deleteTodoList} />;
+				}.bind(this));
+				
+				var footer = <p className="footer"><small><em>{todoList.length} ITEM{todoList.length > 1 ? 'S':''} IN THE LIST</em></small></p>;
+				return (
+					<div>
+						<p className="title">REACT TODO APP</p>
+						<input className="input-todo" type="text" placeholder="What are you doing?" onKeyDown={this.handleChange} onChange={this.handleTodo.bind(this)} value={this.state.todoInput}/>
+						{todoList}
+						{footer}
+					</div>
+				)
+			}
+		});
+
+		var TodoList = React.createClass({
+			delete: function(){
+				this.props.delete(this.props.index);
+			},
+			render: function(){
+				return (
+					<div className="todo-list">
+						<p>{this.props.todo} <button className="delete-btn" type="button" value="x" onClick={this.delete}><i className="fa fa-times"></i></button></p>
+					</div>
+				);				
+			}
+		});
+
+		React.renderComponent(<TodoApp />, document.body );
+	</script>
+</body>
+</html>
