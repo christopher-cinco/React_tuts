@@ -35,17 +35,19 @@
 				this.state.todoList.push({ 'todo': this.state.todoInput });
 				this.setState({ todoList: this.state.todoList, todoInput: '' });
 			},
-			deleteTodoList: function(index){
-				var todoList_dummy = this.state.todoList;
-				todoList_dummy.splice(index, 1);
-				this.setState({todoList: todoList_dummy });
+			deleteTodoList: function(index){  // accepts parameter index
+				var todoList_dummy = this.state.todoList; //create dummy todoList
+				todoList_dummy.splice(index, 1);  //remove item via index using js splice function
+ 				this.setState({todoList: todoList_dummy }); //set the current todoList to dummy
 			},
 			render: function()
 			{
 				var todoList = this.state.todoList.map(function(element, index){
 					return <TodoList todo={element.todo} index={index} delete={this.deleteTodoList} />;
 				}.bind(this));
-				
+				//passed down {this.deleteTodoList}(event handler) as delete to child component <TodoList />
+				// .bind(this) is used create connection between parent and child component when passing event handlers
+				//and passed down 'this' object as well
 				var footer = <p className="footer"><small><em>{todoList.length} ITEM{todoList.length > 1 ? 'S':''} IN THE LIST</em></small></p>;
 				return (
 					<div>
@@ -60,9 +62,11 @@
 
 		var TodoList = React.createClass({
 			delete: function(){
-				this.props.delete(this.props.index);
+				this.props.delete(this.props.index); //when the button is pressed, access parent's component delete function and pass the index of item
 			},
 			render: function(){
+				//added button 
+				// added key event-onClick on the button 
 				return (
 					<div className="todo-list">
 						<p>{this.props.todo} <button className="delete-btn" type="button" value="x" onClick={this.delete}><i className="fa fa-times"></i></button></p>

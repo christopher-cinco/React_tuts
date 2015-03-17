@@ -13,40 +13,42 @@
 		/** @jsx React.DOM */
 
 		var TodoApp = React.createClass({
-			getInitialState: function(){
-				return {
+			getInitialState: function(){ // Initialization
+				return { 
 					todoInput: '',
 					todoList: []
 				}
 			},
 			handleChange: function(event){
-				if(event.which === 13){
-					this.addTodoList();
+				if(event.which === 13){  //check if the user presses the key 'Enter'
+					this.addTodoList(); 
 				}
-				else if (event.which === 27){
+				else if (event.which === 27){ //check if the user presses the key 'Esc'
 					this.setState({todoInput:''});
 				}
 			},
 			handleTodo: function(event){
 				var value = event.target.value;
-				this.setState({ todoInput:value });
+				this.setState({ todoInput: value });
 			},
 			addTodoList: function(){
-				this.state.todoList.push({ 'todo': this.state.todoInput });
-				this.setState({ todoList: this.state.todoList, todoInput: '' });
+				this.state.todoList.push({ 'todo': this.state.todoInput }); // push new object to the array with key 'todo'
+				this.setState({ todoList: this.state.todoList, todoInput: '' }); // set current state to the latest state 
 			},
 			render: function()
 			{
 				var todoList = this.state.todoList.map(function(element, index){
-					return <TodoList todo={element.todo} index={index} />;
-				});
+					return <TodoList todo={element.todo} index={index} />; 
+				}); //maps this.state.todoList to <TodoList /> component. Passed down the {element.todo} as todo and {index} as index to <TodoList/> component
 				
 				var footer = <p className="footer"><small><em>{todoList.length} ITEM{todoList.length > 1 ? 'S':''} IN THE LIST</em></small></p>;
+				//indicator or counter of the number of items on the list
+
 				return (
 					<div>
 						<p className="title">REACT TODO APP</p>
 						<input className="input-todo" type="text" placeholder="What are you doing?" onKeyDown={this.handleChange} onChange={this.handleTodo.bind(this)} value={this.state.todoInput}/>
-						{todoList}
+						{todoList} 
 						{footer}
 					</div>
 				)
@@ -55,6 +57,8 @@
 
 		var TodoList = React.createClass({
 			render: function(){
+				//Access object from parent Component using this.props
+				//Display 'todo' which was passed down by the parent Component - <TodoApp/>				
 				return (
 					<div className="todo-list">
 						<p>{this.props.todo}</p>
@@ -63,7 +67,7 @@
 			}
 		});
 
-		React.renderComponent(<TodoApp />, document.body );
+		React.renderComponent(<TodoApp />, document.body ); //Render Parent Component to the document's body
 	</script>
 </body>
 </html>
